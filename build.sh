@@ -12,7 +12,9 @@ jq '.provisioners[.provisioners| length] += {"type": "shell", "script": "wm5102.
 jq '.provisioners[.provisioners| length] += {"type": "shell", "inline": "echo \"start_x=1\ngpu_mem=256\" >> /boot/config.txt"}' | \
 jq '.provisioners[.provisioners| length] += {"type": "shell", "inline": "touch /boot/ssh"}' | \
 jq '.provisioners[.provisioners| length] += {"type": "file", "source": "0-gopro.rules", "destination": "/etc/udev/rules.d/0-gopro.rules"}' | \
-jq '.provisioners[.provisioners| length] += {"type": "file", "source": "wpa_supplicant.conf", "destination": "/boot/wpa_supplicant.conf"}' \
+jq '.provisioners[.provisioners| length] += {"type": "file", "source": "wpa_supplicant.conf", "destination": "/boot/wpa_supplicant.conf"}' | \
+jq '.provisioners[.provisioners| length] += {"type": "file", "source": "stream.sh", "destination": "/home/pi/stream.sh"}' | \
+jq '.provisioners[.provisioners| length] += {"type": "file", "source": "rc.local", "destination": "/etc/rc.local"}' \
 > latest.os.json
 docker image pull mkaczanowski/packer-builder-arm
 time docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm build latest.os.json
